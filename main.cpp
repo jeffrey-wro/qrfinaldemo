@@ -46,70 +46,6 @@ int main(int argc, char **argv) {
 	printf("%d\n\n", volt);
 
 	string data;
-/*
-	for(;;)
-	{
-    	Mat display, frame;
-	
-		cam >> frame; //get new frame
-		cvtColor(frame, display, COLOR_BGR2GRAY);
-		
-		Mat pts;
-		QRCodeDetector qrDecoder = QRCodeDetector();
-		if(qrDecoder.detect(display, pts))
-		{
-			//set data to decoded qr code
-			data = qrDecoder.detectAndDecode(display, pts);
-
-			printf(data.c_str());
-			fflush(stdout);
-			
-			if(data == "Forwards") //forwards
-			{
-				//set motor speed
-				mc.setMotorSpeeds(DC, 50, -50);
-				//wait for 3 seconds
-				Utils::waitFor(3);
-				//set speed 0
-				mc.setMotorSpeeds(DC, 0, 0);
-
-			}
-			if(data == "Square") //move in a square
-			{
-				int leftCount = 0;
-				int rightCount = 0;
-				
-				for(int i=0; i<4; i++){
-					//move forward
-					leftCount += 360;
-					rightCount -= 360;
-					mc.setMotorDegrees(DC, speed, leftCount, speed, 					rightCount);
-					//wait for 3 seconds
-					Utils::waitFor(3);
-
-					//turn 90 degrees
-					rightCount -= 465;
-					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
-					Utils::waitFor(3);
-				}
-			}
-			if(data == "Backwards") //backwards
-			{
-				//set motor speed
-				mc.setMotorSpeeds(DC, -50, 50);
-				//wait for 3 seconds
-				Utils::waitFor(3);
-				//set speed 0
-				mc.setMotorSpeeds(DC, 0, 0);
-				
-			}
-			
-			//delay and reset
-			data = "0";
-		}
-
-	}
-	*/
 	Mat display, frame, pts;
 	QRCodeDetector qrDecoder = QRCodeDetector();
 	
@@ -124,9 +60,33 @@ int main(int argc, char **argv) {
 			{
 				data = qrDecoder.detectAndDecode(display, pts);
 				
-				if(data == "Forwards")
+				if(data == "Ver1")
 				{
-					//add relevant code here
+					//move backwards
+					leftCount -= 360; //fix??
+					rightCount += 360; //fix??
+					mc.setMotorDegrees(DC, speed, leftCount, speed, rightCount);
+					
+					//wait for 3 seconds
+					Utils::waitFor(3);
+					
+					//turn 90 degrees left
+					rightCount -= 465; //fix
+					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
+					
+					//wait for 3 seconds
+					Utils::waitFor(3);
+					
+					//move forwards
+					leftCount += 360;
+					rightCount -= 360;
+					mc.setMotorDegrees(DC, speed, leftCount, speed, rightCount);
+					
+					//turn 90 degrees right
+					rightCount -= 465; //fix
+					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
+					
+					//cleanup
 					Utils::waitFor(2);
 					mc.controllerReset(DC);
 
@@ -134,9 +94,24 @@ int main(int argc, char **argv) {
 					return status;
 				}
 				
-				if(data == "Backwards")
+				if(data == "right")
 				{
 					//add relevant code here
+					
+					//move backwards
+					leftCount += 360;
+					rightCount -= 360;
+					mc.setMotorDegrees(DC, speed, leftCount, speed, rightCount);
+					
+					//wait for 3 seconds
+					Utils::waitFor(3);
+					
+					//turn 90 degrees
+					rightCount -= 465;
+					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
+					Utils::waitFor(3);
+					
+					
 					Utils::waitFor(2);
 					mc.controllerReset(DC);
 
