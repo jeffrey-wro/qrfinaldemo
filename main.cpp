@@ -63,31 +63,31 @@ int main(int argc, char **argv) {
 				if(data == "Ver1")
 				{
 					//move backwards
-					leftCount -= 360; //fix??
-					rightCount += 360; //fix??
+					leftCount = -360;
+					rightCount = 360;
 					mc.setMotorDegrees(DC, speed, leftCount, speed, rightCount);
 					
 					//wait for 3 seconds
 					Utils::waitFor(3);
 					
 					//turn 90 degrees left
-					rightCount -= 465; //fix
+					rightCount = -485;
 					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
 					
 					//wait for 3 seconds
 					Utils::waitFor(3);
 					
 					//move forwards
-					leftCount += 360;
-					rightCount -= 360;
+					leftCount = 360;
+					rightCount = -360;
 					mc.setMotorDegrees(DC, speed, leftCount, speed, rightCount);
 					
 					//turn 90 degrees right
-					rightCount -= 465; //fix
+					rightCount = 485; //fix
 					mc.setMotorDegrees(DC, 0, leftCount, speed, rightCount);
 					
 					//cleanup
-					Utils::waitFor(2);
+					Utils::waitFor(3);
 					mc.controllerReset(DC);
 
 					status = MyRio_Close();
